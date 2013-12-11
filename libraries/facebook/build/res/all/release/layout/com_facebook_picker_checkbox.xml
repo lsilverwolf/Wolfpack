@@ -23,8 +23,4 @@
     android:focusable="false"
     android:clickable="false"
     android:button="@drawable/com_facebook_button_check" />
-<<<<<<< HEAD
-<!-- From: file:/C:/Users/Chloe%20Local/Documents/GitHub/Wolfpack/libraries/facebook/res/layout/com_facebook_picker_checkbox.xml -->
-=======
 <!-- From: file:/Users/wolflyra/Documents/Mobile_Proto/Wolfpack/libraries/facebook/res/layout/com_facebook_picker_checkbox.xml -->
->>>>>>> d492a875d4c928db345d2173fa74cfc307ad3cee

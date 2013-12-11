@@ -32,8 +32,4 @@
     android:shadowDy="1"
     android:shadowRadius="1"
     android:shadowColor="#BFFFFFFF" />
-<<<<<<< HEAD
-<!-- From: file:/C:/Users/Chloe%20Local/Documents/GitHub/Wolfpack/libraries/facebook/res/layout/com_facebook_picker_list_section_header.xml -->
-=======
 <!-- From: file:/Users/wolflyra/Documents/Mobile_Proto/Wolfpack/libraries/facebook/res/layout/com_facebook_picker_list_section_header.xml -->
->>>>>>> d492a875d4c928db345d2173fa74cfc307ad3cee

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="My Score: 0"
-        android:id="Points to New Territory: 0"
+        android:id="@+id/PtsToTerritory"
         android:layout_marginTop="35dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -22,15 +22,15 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Points to New Territory: 0"
         android:id="@+id/textView2"
-        android:layout_below="Points to New Territory: 0"
-        android:layout_alignLeft="Points to New Territory: 0"
-        android:layout_alignStart="Points to New Territory: 0" />
+        android:layout_below="@+id/PtsToTerritory"
+        android:layout_alignLeft="@+id/PtsToTerritory"
+        android:layout_alignStart="@+id/PtsToTerritory" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageButton"
-        android:layout_below="Points to New Territory: 0"
+        android:layout_below="@+id/PtsToTerritory"
         android:layout_alignRight="@+id/textView2"
         android:layout_alignEnd="@+id/textView2" />
 

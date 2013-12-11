@@ -18,8 +18,4 @@
     <item android:drawable="@drawable/com_facebook_picker_list_pressed"  />
     <item android:drawable="@drawable/com_facebook_picker_list_longpressed"  />
 </transition>
-<<<<<<< HEAD
-<!-- From: file:/C:/Users/Chloe%20Local/Documents/GitHub/Wolfpack/libraries/facebook/res/drawable/com_facebook_picker_list_selector_background_transition.xml -->
-=======
 <!-- From: file:/Users/wolflyra/Documents/Mobile_Proto/Wolfpack/libraries/facebook/res/drawable/com_facebook_picker_list_selector_background_transition.xml -->
->>>>>>> d492a875d4c928db345d2173fa74cfc307ad3cee
