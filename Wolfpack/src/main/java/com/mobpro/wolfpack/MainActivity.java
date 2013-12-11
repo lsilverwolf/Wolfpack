@@ -12,6 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.Button;
+import android.widget.Chronometer;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.facebook.*;
@@ -30,29 +33,6 @@ public class MainActivity extends ActionBarActivity {
                     .commit();
         }
 
-        // start Facebook Login
-        Session.openActiveSession(this, true, new Session.StatusCallback() {
-
-            // callback when session changes state
-            @Override
-            public void call(Session session, SessionState state, Exception exception) {
-                if (session.isOpened()) {
-
-                    // make request to the /me API
-                    Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
-
-                        // callback after Graph API response with user object
-                        @Override
-                        public void onCompleted(GraphUser user, Response response) {
-                            if (user != null) {
-                                TextView welcome = (TextView) findViewById(R.id.welcome);
-                                welcome.setText("Hello " + user.getName() + "!");
-                            }
-                        }
-                    });
-                }
-            }
-        });
 
     }
 
@@ -94,7 +74,24 @@ public class MainActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            ImageButton wolf = (ImageButton)rootView.findViewById(R.id.puppybutton);
+            final Chronometer clickTime = (Chronometer) rootView.findViewById(R.id.timeToClick);
+            final int[] points = {0};
+            final TextView pointsDisplay = (TextView)rootView.findViewById(R.id.pointsCounter);
+            clickTime.start();
+            wolf.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    points[0] += 1;
+                    pointsDisplay.setText("Howl Points: "+Integer.toString(points[0]));
+                    clickTime.stop();
+                    clickTime.start();
+                }
+            });
+
+
             return rootView;
+
         }
     }
 
