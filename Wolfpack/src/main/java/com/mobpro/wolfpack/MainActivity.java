@@ -1,5 +1,6 @@
 package com.mobpro.wolfpack;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -11,12 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.TextView;
 
-import com.facebook.LoggingBehavior;
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Settings;
-import com.facebook.model.GraphUser;
+import com.facebook.*;
+import com.facebook.model.*;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -31,23 +30,37 @@ public class MainActivity extends ActionBarActivity {
                     .commit();
         }
 
-        Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
-        Settings.addLoggingBehavior(LoggingBehavior.REQUESTS);
+        // start Facebook Login
+        Session.openActiveSession(this, true, new Session.StatusCallback() {
 
-        Request request = Request.newGraphPathRequest(null, "/4", new Request.Callback() {
+            // callback when session changes state
             @Override
-            public void onCompleted(Response response) {
-                if(response.getError() != null) {
-                    Log.i("MainActivity", String.format("Error making request: %s", response.getError()));
-                } else {
-                    GraphUser user = response.getGraphObjectAs(GraphUser.class);
-                    Log.i("MainActivity", String.format("Name: %s", user.getName()));
+            public void call(Session session, SessionState state, Exception exception) {
+                if (session.isOpened()) {
+
+                    // make request to the /me API
+                    Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
+
+                        // callback after Graph API response with user object
+                        @Override
+                        public void onCompleted(GraphUser user, Response response) {
+                            if (user != null) {
+                                TextView welcome = (TextView) findViewById(R.id.welcome);
+                                welcome.setText("Hello " + user.getName() + "!");
+                            }
+                        }
+                    });
                 }
             }
         });
-        request.executeAsync();
+
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
