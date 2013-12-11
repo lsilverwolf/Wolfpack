@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/red"
+        android:layout_marginTop="151dp"
+        android:src="@drawable/red"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/blue" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/yellow"
+        android:src="@drawable/yellow"
+        android:layout_alignTop="@+id/red"
+        android:layout_toRightOf="@+id/red" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/green"
+        android:src="@drawable/green"
+        android:layout_alignTop="@+id/blue"
+        android:layout_toLeftOf="@+id/blue" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/blue"
+        android:src="@drawable/blue"
+        android:layout_marginRight="97dp"
+        android:layout_below="@+id/yellow"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Score: 0"
+        android:id="@+id/textView"
+        android:layout_above="@+id/yellow"
+        android:layout_toLeftOf="@+id/yellow" />
+</RelativeLayout>
