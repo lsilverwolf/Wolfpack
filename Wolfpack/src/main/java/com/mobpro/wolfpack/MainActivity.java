@@ -2,23 +2,11 @@ package com.mobpro.wolfpack;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.os.Build;
-import android.widget.Button;
-import android.widget.Chronometer;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.facebook.*;
 import com.facebook.model.*;
@@ -52,7 +40,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         // Define view fragments
         MainFragment mainFragment = new MainFragment();
-        GameFragment gameFragment = new GameFragment();
+        PackFragment packFragment = new PackFragment();
         QuestFragment questFragment = new QuestFragment();
 
         /*
@@ -67,7 +55,7 @@ public class MainActivity extends Activity {
         mainTab.setTabListener(new NavTabListener(mainFragment));
 
         android.app.ActionBar.Tab packTab = actionBar.newTab().setText(R.string.tab2);
-        packTab.setTabListener(new NavTabListener(gameFragment));
+        packTab.setTabListener(new NavTabListener(packFragment));
 
         android.app.ActionBar.Tab questTab = actionBar.newTab().setText(R.string.tab3);
         questTab.setTabListener(new NavTabListener(questFragment));

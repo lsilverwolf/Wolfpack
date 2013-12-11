@@ -15,7 +15,6 @@ import android.widget.TextView;
 public class MainFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.game_fragment);
     }
 
     @Override
