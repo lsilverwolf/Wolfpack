@@ -46,4 +46,8 @@
             android:layout_height="23dip"
             android:layout_marginRight="10dip"/>
 </LinearLayout>
+<<<<<<< HEAD
+<!-- From: file:/C:/Users/Chloe%20Local/Documents/GitHub/Wolfpack/libraries/facebook/res/layout/com_facebook_picker_list_row.xml -->
+=======
 <!-- From: file:/Users/wolflyra/Documents/Mobile_Proto/Wolfpack/libraries/facebook/res/layout/com_facebook_picker_list_row.xml -->
+>>>>>>> d492a875d4c928db345d2173fa74cfc307ad3cee

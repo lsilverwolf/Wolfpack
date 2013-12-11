@@ -18,4 +18,8 @@
   <item android:state_checked="true" android:drawable="@drawable/com_facebook_button_check_on" />
   <item android:drawable="@drawable/com_facebook_button_check_off" />
 </selector>
+<<<<<<< HEAD
+<!-- From: file:/C:/Users/Chloe%20Local/Documents/GitHub/Wolfpack/libraries/facebook/res/drawable/com_facebook_button_check.xml -->
+=======
 <!-- From: file:/Users/wolflyra/Documents/Mobile_Proto/Wolfpack/libraries/facebook/res/drawable/com_facebook_button_check.xml -->
+>>>>>>> d492a875d4c928db345d2173fa74cfc307ad3cee
