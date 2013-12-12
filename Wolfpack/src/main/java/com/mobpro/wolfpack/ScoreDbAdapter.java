@@ -16,8 +16,8 @@ public class ScoreDbAdapter {
 
     private static final String TABLE_NAME = "wolfpack";
     private static final String COLUMN_ID = "_id";
-    private static final String COLUMN_TITLE = "points";
-    private static final String COLUMN_CONTENTS = "timestamp";
+    private static final String COLUMN_POINTS = "points";
+    private static final String COLUMN_TIMESTAMP = "timestamp";
 
     private final Context context;
     private ScoreDbHelper dbHelper;
@@ -38,11 +38,11 @@ public class ScoreDbAdapter {
     }
 
 
-    public Score createScore(String score, String timestamp) {
+    public Score createScore(Integer score, Integer timestamp) {
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_TITLE, score);
-        values.put(COLUMN_CONTENTS, timestamp);
+        values.put(COLUMN_POINTS, score);
+        values.put(COLUMN_TIMESTAMP, timestamp);
         long id = db.insert(TABLE_NAME, null, values);
 
         return new Score(id, score, timestamp);
@@ -54,7 +54,7 @@ public class ScoreDbAdapter {
     }
 
     public Score getScore(long id){
-        Cursor cursor = db.query(true, TABLE_NAME, new String[] {COLUMN_ID, COLUMN_TITLE, COLUMN_CONTENTS}, COLUMN_ID + "=" + id, null, null, null, null, null);
+        Cursor cursor = db.query(true, TABLE_NAME, new String[] {COLUMN_ID, COLUMN_POINTS, COLUMN_TIMESTAMP}, COLUMN_ID + "=" + id, null, null, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
@@ -63,20 +63,20 @@ public class ScoreDbAdapter {
     }
 
     public Cursor getAllScores(){
-        return db.query(true, TABLE_NAME, new String[] {COLUMN_ID, COLUMN_TITLE, COLUMN_CONTENTS}, null, null, null, null, null, null);
+        return db.query(true, TABLE_NAME, new String[] {COLUMN_ID, COLUMN_POINTS, COLUMN_TIMESTAMP}, null, null, null, null, null, null);
     }
 
     public static Score scoreFromCursor(Cursor cursor){
         return new Score(cursor.getLong(cursor.getColumnIndex(COLUMN_ID)),
-                        cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
-                        cursor.getString(cursor.getColumnIndex(COLUMN_CONTENTS)));
+                        cursor.getInt(cursor.getColumnIndex(COLUMN_POINTS)),
+                        cursor.getInt(cursor.getColumnIndex(COLUMN_TIMESTAMP)));
     }
 
 
     private class ScoreDbHelper extends SQLiteOpenHelper {
 
         private static final String CREATE_DATABASE = "CREATE TABLE " + TABLE_NAME + " (" +
-                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_TITLE + " TEXT, " + COLUMN_CONTENTS + " TEXT)";
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_POINTS + " INTEGER, " + COLUMN_TIMESTAMP + " INTEGER)";
 
         public ScoreDbHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);

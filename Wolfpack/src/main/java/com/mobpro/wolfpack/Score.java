@@ -5,10 +5,10 @@ package com.mobpro.wolfpack;
  */
 public class Score {
     private long id;
-    private String score;
-    private String timestamp;
+    private Integer score;
+    private Integer timestamp;
 
-    public Score(long id, String score, String timestamp) {
+    public Score(long id, Integer score, Integer timestamp) {
         this.id = id;
         this.score = score;
         this.timestamp = timestamp;
@@ -22,19 +22,19 @@ public class Score {
         this.id = id;
     }
 
-    public String getScore() {
+    public Integer getScore() {
         return score;
     }
 
-    public void setScore(String score) {
+    public void setScore(Integer score) {
         this.score = score;
     }
 
-    public String getTimestamp() {
+    public Integer getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Integer timestamp) {
         this.timestamp = timestamp;
     }
 
