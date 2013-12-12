@@ -43,11 +43,12 @@
             android:text="Howl Points: 0"
             android:id="@+id/pointsCounter" />
 
-        <Chronometer
+        <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
             android:id="@+id/timeToClick"
+            android:text="00"
             />
 
     </LinearLayout>
