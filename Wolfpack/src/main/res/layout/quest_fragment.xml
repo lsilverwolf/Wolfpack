@@ -26,12 +26,12 @@
         android:layout_alignLeft="@+id/PtsToTerritory"
         android:layout_alignStart="@+id/PtsToTerritory" />
 
-    <ImageButton
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton"
-        android:layout_below="@+id/PtsToTerritory"
-        android:layout_alignRight="@+id/textView2"
-        android:layout_alignEnd="@+id/textView2" />
+        android:id="@+id/imageView"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="54dp" />
 
 </RelativeLayout>
