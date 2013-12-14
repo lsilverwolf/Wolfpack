@@ -45,7 +45,15 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Score: 0"
-        android:id="@+id/textView"
+        android:id="@+id/score"
         android:layout_above="@+id/yellow"
         android:layout_toLeftOf="@+id/yellow" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I'm done"
+        android:id="@+id/done"
+        android:layout_below="@+id/green"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

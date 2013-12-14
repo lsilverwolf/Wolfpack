@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -35,29 +36,90 @@ public class GameFragment extends Fragment {
      */
 
     //Starts the game
-    public void beginGame(){
-        beginRound(0);
+    private int[] colorList;
+    private int turn;
+    public int score;
+    //private int[] userResponse;
+
+    public void startGame (){
+        generateColors();
+        runRound(0);
     }
 
-    //Starts a round
-    public int[] beginRound(int roundNum){
-        int[] colorList = chooseOrder(roundNum+3);
-        return null;
-    }
-
-    //generates a list of colors
-    public int[] chooseOrder(int size){
-        int[] colorList =new int[size];
-        for(int i=0; i<size; i++){
-            colorList[i] = (int) Math.random()*4;
-        }
+    public int[] generateColors(){
+      int max = 1000;
+      colorList = new int[max];
+      for (int i=0; i<15; i++){
+          colorList[i] = (int) Math.random()*4;
+      }
         return colorList;
     }
 
-    //blinks the
-    public void flashAll(int[] colorList){
-        for (int i: colorList){
-            flashOne(i);
+    public void runRound(int round){
+        //flash appropriate colors
+        flashAll(round);
+        getUserInput(round, 0);
+    }
+
+    public void getUserInput(int round, int c){
+        //final int[] userResponse = new int[0];
+        final int[] counter = new int[0];
+        final int[] round1 = new int[0];
+        round1[0]=round;
+        counter[0]=c;
+        ImageButton red = (ImageButton) v.findViewById(R.id.red);
+        ImageButton yellow = (ImageButton) v.findViewById(R.id.yellow);
+        ImageButton green = (ImageButton) v.findViewById(R.id.green);
+        ImageButton blue = (ImageButton) v.findViewById(R.id.blue);
+        if (c>round){
+            runRound(round+1);
+        }
+        else {
+        red.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isCorrect(colorList[counter[0]],0,counter[0],round1[0]);
+            }
+        });
+        yellow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isCorrect(colorList[counter[0]],1,counter[0],round1[0]);
+            }
+        });
+        green.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isCorrect(colorList[counter[0]],2,counter[0],round1[0]);
+            }
+        });
+        blue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isCorrect(colorList[counter[0]],3,counter[0],round1[0]);
+            }
+        });
+        }
+
+    }
+
+    public void isCorrect(int expected, int actual, int round, int counter){
+        if (expected==actual){
+            score += 1;
+            TextView score = (TextView) v.findViewById(R.id.score);
+            score.setText("Score:" + String.valueOf(score));
+            getUserInput(round, counter + 1);
+        }
+        else {
+            startGame();
+        }
+    }
+
+
+
+    public void flashAll(int round){
+        for (int i=0;i<round; i++){
+            flashOne(colorList[i]);
         }
     }
 
@@ -90,9 +152,6 @@ public class GameFragment extends Fragment {
                 break;
         }
     }
-    /*
-    Methods to run the game
-     */
 
     /*
     Async task to wait while button flashes a different color
