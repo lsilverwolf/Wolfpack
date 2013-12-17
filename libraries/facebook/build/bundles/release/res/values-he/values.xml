@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- From: file:/C:/Users/Chloe%20Local/Documents/GitHub/Wolfpack/libraries/facebook/res/values-he/strings.xml -->
+<<<<<<< HEAD
+    <!-- From: file:/Users/wolflyra/Documents/Mobile_Proto/Wolfpack/libraries/facebook/res/values-he/strings.xml -->
+=======
+    <!-- From: file:/Users/rachel/code/mobdev/Wolfpack/libraries/facebook/res/values-he/strings.xml -->
+>>>>>>> dc41cbd88136451655e7dd91e139e1fcd58b20c0
     <eat-comment />
 
     <string name="com_facebook_choose_friends">בחר חברים</string>

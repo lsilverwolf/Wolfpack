@@ -61,4 +61,8 @@
             android:layout_marginRight="10dip"
             android:layout_toLeftOf="@id/com_facebook_picker_divider"/>
 </RelativeLayout>
-<!-- From: file:/C:/Users/Chloe%20Local/Documents/GitHub/Wolfpack/libraries/facebook/res/layout/com_facebook_picker_title_bar.xml -->
+<<<<<<< HEAD
+<!-- From: file:/Users/wolflyra/Documents/Mobile_Proto/Wolfpack/libraries/facebook/res/layout/com_facebook_picker_title_bar.xml -->
+=======
+<!-- From: file:/Users/rachel/code/mobdev/Wolfpack/libraries/facebook/res/layout/com_facebook_picker_title_bar.xml -->
+>>>>>>> dc41cbd88136451655e7dd91e139e1fcd58b20c0

@@ -1,7 +1,6 @@
 package com.mobpro.wolfpack;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,13 +22,14 @@ public class QuestFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        final View rootView = inflater.inflate(R.layout.quest_fragment, container, false);
-        //ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
-        Button conquer = (Button)rootView.findViewById(R.id.conquer);
+        final View rootView = inflater.inflate(R.layout.game_fragment, container, false);
+        ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
+        Button conquer = (Button)rootView.findViewById(R.id.button);
 
         conquer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+<<<<<<< HEAD
                 Fragment newFragment = new VocabGameFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.container, newFragment);
@@ -68,8 +68,13 @@ public class QuestFragment extends Fragment {
 
         }
 
-        return rootView;
+=======
+                //go to game view
+            }
+        });
 
+>>>>>>> 6b9de312eeac842631274eff430cd9c2676adc2f
+        return rootView;
 
     }
 

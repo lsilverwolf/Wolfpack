@@ -27,4 +27,8 @@
             android:background="@drawable/com_facebook_picker_default_separator_color"
             />
 </LinearLayout>
-<!-- From: file:/C:/Users/Chloe%20Local/Documents/GitHub/Wolfpack/libraries/facebook/res/layout/com_facebook_picker_search_box.xml -->
+<<<<<<< HEAD
+<!-- From: file:/Users/wolflyra/Documents/Mobile_Proto/Wolfpack/libraries/facebook/res/layout/com_facebook_picker_search_box.xml -->
+=======
+<!-- From: file:/Users/rachel/code/mobdev/Wolfpack/libraries/facebook/res/layout/com_facebook_picker_search_box.xml -->
+>>>>>>> dc41cbd88136451655e7dd91e139e1fcd58b20c0
