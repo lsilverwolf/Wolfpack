@@ -2,16 +2,24 @@ package com.mobpro.wolfpack;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.os.Build;
+import android.widget.TextView;
 
 import com.facebook.*;
 import com.facebook.model.*;
 
 public class MainActivity extends Activity {
+    MyService service;
+    Session session;
+    GraphUser user;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -38,6 +46,22 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        Intent i = new Intent(getApplicationContext(), MyService.class);
+        startService(i);
+        ServiceConnection conn = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                service = ((MyService.MyServiceBinder) iBinder).getService();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {}
+        };
+
+        bindService(new Intent(this, MyService.class), conn, BIND_AUTO_CREATE);
+
         // Define view fragments
         MainFragment mainFragment = new MainFragment();
         PackFragment packFragment = new PackFragment();
@@ -66,21 +90,28 @@ public class MainActivity extends Activity {
 
         actionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.android_dark_blue)));
 
-        /*
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
+        Session.openActiveSession(this, true, new Session.StatusCallback() {
 
+            // callback when session changes state
+            @Override
+            public void call(Session session, SessionState state, Exception exception) {
+                if (session.isOpened()) {
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
-    }
-*/
+                    // make request to the /me API
+                    Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
 
-
+                        // callback after Graph API response with user object
+                        @Override
+                        public void onCompleted(GraphUser user, Response response) {
+                            if (user != null) {
+                                MainActivity.this.user = user;
+                                TextView welcome = (TextView) findViewById(R.id.welcome);
+                                welcome.setText("Hello " + user.getName() + "!");
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 }

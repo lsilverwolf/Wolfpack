@@ -23,4 +23,8 @@
               android:layout_width="fill_parent"/>
 
 </merge>
+<<<<<<< HEAD
 <!-- From: file:/Users/wolflyra/Documents/Mobile_Proto/Wolfpack/libraries/facebook/res/layout/com_facebook_picker_title_bar_stub.xml -->
+=======
+<!-- From: file:/Users/rachel/code/mobdev/Wolfpack/libraries/facebook/res/layout/com_facebook_picker_title_bar_stub.xml -->
+>>>>>>> dc41cbd88136451655e7dd91e139e1fcd58b20c0
