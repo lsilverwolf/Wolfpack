@@ -2,8 +2,12 @@ package com.mobpro.wolfpack;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.os.Build;
@@ -12,6 +16,7 @@ import com.facebook.*;
 import com.facebook.model.*;
 
 public class MainActivity extends Activity {
+    MyService service;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -38,6 +43,22 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        Intent i = new Intent(getApplicationContext(), MyService.class);
+        startService(i);
+        ServiceConnection conn = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                service = ((MyService.MyServiceBinder) iBinder).getService();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {}
+        };
+
+        bindService(new Intent(this, MyService.class), conn, BIND_AUTO_CREATE);
+
         // Define view fragments
         MainFragment mainFragment = new MainFragment();
         PackFragment packFragment = new PackFragment();
