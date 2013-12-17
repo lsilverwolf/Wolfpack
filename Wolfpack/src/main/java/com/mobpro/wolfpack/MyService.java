@@ -62,22 +62,22 @@ public class MyService extends Service {
         }.execute(null, null);
     }
 
-    public void getFriendsPacks(final Session session){
-        final ArrayList<String> usernames = new ArrayList<String>();
+    public void getFriendsPacks(final Session session, final PackFragment packFragment, final MainActivity activity){
+//        final ArrayList<String> usernames = new ArrayList<String>();
         new AsyncTask<Void,Void,ArrayList<Pack>>(){
             @Override
             protected ArrayList<Pack> doInBackground(Void... voids) {
-                ArrayList<Pack> packs = new ArrayList<Pack>();
-
-                Request.newMyFriendsRequest(session, new Request.GraphUserListCallback() {
-                    @Override
-                    public void onCompleted(List<GraphUser> users, Response response) {
-                        for (GraphUser user:users){
-                            usernames.add(user.getUsername());
-                            Log.d("getting friends packs", "found friend: " + user.getUsername());
-                        }
-                    }
-                }).executeAndWait();
+                final ArrayList<Pack> packs = new ArrayList<Pack>();
+//
+//                Request.newMyFriendsRequest(session, new Request.GraphUserListCallback() {
+//                    @Override
+//                    public void onCompleted(List<GraphUser> users, Response response) {
+//                        for (GraphUser user:users){
+//                            usernames.add(user.getUsername());
+//                            Log.d("getting friends packs", "found friend: " + user.getUsername());
+//                        }
+//                    }
+//                }).executeAndWait();
 
                 try{
                 Log.d("getting friends packs", "attempting to get all packs");
@@ -92,12 +92,13 @@ public class MyService extends Service {
                 responseString = out.toString();
                 List<List<String>> parsedResponse = JSONParse(responseString);
                 for (List<String> resp:parsedResponse){
-                    if (usernames.contains(resp.get(1))){
+//                    if (usernames.contains(resp.get(1))){
                         Pack pack = new Pack(resp.get(0), resp.get(1));
+                        packs.add(pack);
                         Log.d("getting friends packs", "found friends pack: " + pack.toString());
-                    } else {
-                        Log.d("getting friends packs", resp.get(1) + " is not a friend");
-                    }
+//                    } else {
+//                        Log.d("getting friends packs", resp.get(1) + " is not a friend");
+//                    }
                 }
                 Log.d("getting friends packs", "got friends packs");
                 } catch (Exception e){
@@ -105,7 +106,13 @@ public class MyService extends Service {
                 }
 
 
-
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("getting friends packs", "updating view");
+                        packFragment.updatePackList(packs);
+                    }
+                });
 
                 return packs;
             }

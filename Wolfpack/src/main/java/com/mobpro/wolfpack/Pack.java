@@ -14,9 +14,6 @@ public class Pack {
 
     @Override
     public String toString() {
-        return "Pack{" +
-                "name='" + name + '\'' +
-                ", creator='" + creator + '\'' +
-                '}';
+        return name + " created by " + creator;
     }
 }

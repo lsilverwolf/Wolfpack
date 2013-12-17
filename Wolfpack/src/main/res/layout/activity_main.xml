@@ -5,17 +5,4 @@
     android:layout_height="match_parent"
     tools:context="com.mobpro.wolfpack.MainActivity"
     tools:ignore="MergeRootFrame" >
-
-    <fragment
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:name="com.mobpro.wolfpack.LoginFragment"
-        android:id="@+id/login_fragment" />
-
-    <fragment
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:name="com.mobpro.wolfpack.GameFragment"
-        android:id="@+id/game_fragment" />
-
 </FrameLayout>
