@@ -11,12 +11,15 @@ import android.os.IBinder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.os.Build;
+import android.widget.TextView;
 
 import com.facebook.*;
 import com.facebook.model.*;
 
 public class MainActivity extends Activity {
     MyService service;
+    Session session;
+    GraphUser user;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -87,21 +90,28 @@ public class MainActivity extends Activity {
 
         actionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.android_dark_blue)));
 
-        /*
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
+        Session.openActiveSession(this, true, new Session.StatusCallback() {
 
+            // callback when session changes state
+            @Override
+            public void call(Session session, SessionState state, Exception exception) {
+                if (session.isOpened()) {
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
-    }
-*/
+                    // make request to the /me API
+                    Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
 
-
+                        // callback after Graph API response with user object
+                        @Override
+                        public void onCompleted(GraphUser user, Response response) {
+                            if (user != null) {
+                                MainActivity.this.user = user;
+                                TextView welcome = (TextView) findViewById(R.id.welcome);
+                                welcome.setText("Hello " + user.getName() + "!");
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 }

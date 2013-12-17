@@ -15,6 +15,7 @@ public class PackFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         activity = (MainActivity) getActivity();
+        activity.service.getFriendsPacks(activity.session);
     }
 
     @Override
@@ -25,9 +26,11 @@ public class PackFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String packName = ((EditText) rootView.findViewById(R.id.pack_name)).getText().toString();
-                activity.service.createPack(packName, "exampleUser");
+                activity.service.createPack(packName, activity.user.getUsername());
             }
         });
+
+
 
         return rootView;
     }
