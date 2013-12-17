@@ -10,35 +10,37 @@
         android:layout_height="wrap_content"
         android:id="@+id/red"
         android:layout_marginTop="151dp"
-        android:src="@drawable/red"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/blue" />
+        android:layout_toLeftOf="@+id/blue"
+        android:focusableInTouchMode="false"
+        android:background="@drawable/red" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/yellow"
-        android:src="@drawable/yellow"
         android:layout_alignTop="@+id/red"
-        android:layout_toRightOf="@+id/red" />
+        android:layout_toRightOf="@+id/red"
+        android:background="@drawable/yellow" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/green"
-        android:src="@drawable/green"
         android:layout_alignTop="@+id/blue"
-        android:layout_toLeftOf="@+id/blue" />
+        android:layout_toLeftOf="@+id/blue"
+        android:background="@drawable/green"
+        android:clickable="true" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/blue"
-        android:src="@drawable/blue"
         android:layout_marginRight="97dp"
         android:layout_below="@+id/yellow"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/blue" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,5 +57,15 @@
         android:text="I'm done"
         android:id="@+id/done"
         android:layout_below="@+id/green"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:id="@+id/startGame"
+        android:layout_below="@+id/blue"
         android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

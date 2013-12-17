@@ -30,22 +30,43 @@ public class QuestFragment extends Fragment {
         conquer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //go to game view
-                // Create new fragment and transaction
-                Fragment newFragment = new GameFragment();
+                Fragment newFragment = new VocabGameFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-// Replace whatever is in the fragment_container view with this fragment,
-// and add the transaction to the back stack
                 transaction.replace(R.id.container, newFragment);
                 transaction.addToBackStack(null);
-
-// Commit the transaction
                 transaction.commit();
 
             }
         });
 
+        ImageView map = (ImageView) rootView.findViewById(R.id.imageView);
+        switch (getStatus()){
+            case 0:
+                map.setImageResource(R.drawable.pos0);
+                break;
+            case 1:
+                map.setImageResource(R.drawable.pos1);
+                break;
+            case 2:
+                map.setImageResource(R.drawable.pos2);
+                break;
+            case 3:
+                map.setImageResource(R.drawable.pos3);
+                break;
+            case 4:
+                map.setImageResource(R.drawable.pos4);
+                break;
+            case 5:
+                map.setImageResource(R.drawable.pos5);
+                break;
+            case 6:
+                map.setImageResource(R.drawable.pos6);
+                break;
+            case 7:
+                map.setImageResource(R.drawable.pos7);
+                break;
+
+        }
 
         return rootView;
 
@@ -53,6 +74,34 @@ public class QuestFragment extends Fragment {
     }
 
     private int getStatus(){
-        return 0;
+        /*
+        HERE IS THE OTHER BIG COMMENT. GET THE TOTAL SCORE FROM
+        THE SERVER, AND RETURN THAT SCORE (NOT ACTUALLY 0!!!)
+         */
+        int serverVal = 550; //replace this with the real result!
+        if (serverVal<=100){
+            return 0;
+        }
+        else if (serverVal<=200){
+            return 1;
+        }
+        else if (serverVal<=300){
+            return 2;
+        }
+        else if (serverVal<=400){
+            return 3;
+        }
+        else if (serverVal<=500){
+            return 4;
+        }
+        else if (serverVal<=600){
+            return 5;
+        }
+        else if (serverVal<=700){
+            return 6;
+        }
+        else {
+            return 7;
+        }
     }
 }
