@@ -2,10 +2,10 @@
 <merger>
 
     <dataSet config="main" >
-        <source path="C:\Users\Chloe Local\Documents\GitHub\Wolfpack\libraries\facebook\src\main\assets" />
+        <source path="/Users/wolflyra/Documents/Mobile_Proto/Wolfpack/libraries/facebook/src/main/assets" />
     </dataSet>
     <dataSet config="release" >
-        <source path="C:\Users\Chloe Local\Documents\GitHub\Wolfpack\libraries\facebook\src\release\assets" />
+        <source path="/Users/wolflyra/Documents/Mobile_Proto/Wolfpack/libraries/facebook/src/release/assets" />
     </dataSet>
 
 </merger>
