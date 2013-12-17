@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<<<<<<< HEAD
     <!-- From: file:/Users/wolflyra/Documents/Mobile_Proto/Wolfpack/libraries/facebook/res/values-xhdpi/dimens.xml -->
-=======
-    <!-- From: file:/Users/rachel/code/mobdev/Wolfpack/libraries/facebook/res/values-xhdpi/dimens.xml -->
->>>>>>> dc41cbd88136451655e7dd91e139e1fcd58b20c0
     <eat-comment />
 
     <dimen name="com_facebook_picker_divider_width">2px</dimen>

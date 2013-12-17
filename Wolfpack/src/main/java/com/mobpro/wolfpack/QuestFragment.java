@@ -1,7 +1,9 @@
 package com.mobpro.wolfpack;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,26 +12,37 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 /**
  * Created by Chloe Local on 12/9/13.
  */
 public class QuestFragment extends Fragment {
-
+    MainActivity activity;
+    TextView myPoints;
+    View rootView;
+    TextView nextTerritory;
+    int pointsToNext = 100;
     public void onCreate(Bundle savedInstanceState) {
+        activity = (MainActivity) getActivity();
         super.onCreate(savedInstanceState);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        final View rootView = inflater.inflate(R.layout.game_fragment, container, false);
+        final View rootView = inflater.inflate(R.layout.quest_fragment, container, false);
         ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
         Button conquer = (Button)rootView.findViewById(R.id.button);
+        myPoints = (TextView) rootView.findViewById(R.id.MyPointsToTerritory);
+        nextTerritory = (TextView) rootView.findViewById(R.id.textView2);
 
         conquer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-<<<<<<< HEAD
                 Fragment newFragment = new VocabGameFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.container, newFragment);
@@ -68,45 +81,76 @@ public class QuestFragment extends Fragment {
 
         }
 
-=======
-                //go to game view
-            }
-        });
-
->>>>>>> 6b9de312eeac842631274eff430cd9c2676adc2f
         return rootView;
 
     }
 
     private int getStatus(){
+        int serverVal = 550;
+
         /*
         HERE IS THE OTHER BIG COMMENT. GET THE TOTAL SCORE FROM
         THE SERVER, AND RETURN THAT SCORE (NOT ACTUALLY 0!!!)
          */
-        int serverVal = 550; //replace this with the real result!
+
+        StringBuilder fileTextScore = new StringBuilder();
+        try{
+            FileInputStream fisPoints = activity.openFileInput("VocabScore");
+            InputStreamReader inputStreamReader = new InputStreamReader(fisPoints);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null){
+                fileTextScore.append(line);
+            }
+            fisPoints.close();
+            serverVal = Integer.parseInt(fileTextScore.toString());
+            myPoints.setText("My Points: " + serverVal);
+        }catch (IOException e){
+            Log.e("IOException", e.getMessage());
+        }
+
+        //int serverVal = 550; //replace this with the real result!
         if (serverVal<=100){
+            pointsToNext = 100 - serverVal;
+            nextTerritory.setText("Points to New Territory: " + pointsToNext);
             return 0;
         }
         else if (serverVal<=200){
+            pointsToNext = 200 - serverVal;
+            nextTerritory.setText("Points to New Territory: " + pointsToNext);
             return 1;
         }
         else if (serverVal<=300){
+            pointsToNext = 300 - serverVal;
+            nextTerritory.setText("Points to New Territory: " + pointsToNext);
             return 2;
         }
         else if (serverVal<=400){
+            pointsToNext = 400 - serverVal;
+            nextTerritory.setText("Points to New Territory: " + pointsToNext);
             return 3;
         }
         else if (serverVal<=500){
+            pointsToNext = 500 - serverVal;
+            nextTerritory.setText("Points to New Territory: " + pointsToNext);
             return 4;
         }
         else if (serverVal<=600){
+            pointsToNext = 600 - serverVal;
+            nextTerritory.setText("Points to New Territory: " + pointsToNext);
             return 5;
         }
         else if (serverVal<=700){
+            pointsToNext = 700 - serverVal;
+            nextTerritory.setText("Points to New Territory: " + pointsToNext);
             return 6;
         }
         else {
+            pointsToNext = 800 - serverVal;
+            nextTerritory.setText("Points to New Territory: " + pointsToNext);
             return 7;
         }
+
     }
+
 }

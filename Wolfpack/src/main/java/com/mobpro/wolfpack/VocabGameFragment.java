@@ -2,7 +2,9 @@ package com.mobpro.wolfpack;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,13 +24,16 @@ import java.util.HashMap;
  * Created by Chloe Local on 12/17/13.
  */
 public class VocabGameFragment extends Fragment {
+    MainActivity activity;
     public void onCreate(Bundle savedInstanceState) {
+        activity = (MainActivity) getActivity();
         super.onCreate(savedInstanceState);
     }
 
 
     View v;
     int score=0;
+    int serverVal;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,6 +50,27 @@ public class VocabGameFragment extends Fragment {
                 transaction.replace(R.id.container, newFragment);
                 transaction.addToBackStack(null);
 
+                StringBuilder fileTextScore = new StringBuilder();
+                try{
+                    FileInputStream fisPoints = activity.openFileInput("VocabScore");
+                    InputStreamReader inputStreamReader = new InputStreamReader(fisPoints);
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null){
+                        fileTextScore.append(line);
+                    }
+                    fisPoints.close();
+                    serverVal = Integer.parseInt(fileTextScore.toString()) + score;
+                }catch (IOException e){
+                    Log.e("IOException", e.getMessage());
+                }
+                try {
+                    FileOutputStream fosScore = activity.openFileOutput("VocabScore", Context.MODE_PRIVATE);
+                    fosScore.write(Integer.toString(serverVal).getBytes());
+                    fosScore.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 /*
                 HERE IS THE BIG COMMENT. IF A USER CLICKS HERE THAT MEANS THEY ARE
                 DONE PLAYING FOR NOW. ADD THIS SCORE TO THE EXISTING TOTAL SCORE ON THE
