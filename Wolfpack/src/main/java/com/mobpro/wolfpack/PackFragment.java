@@ -78,10 +78,13 @@ public class PackFragment extends Fragment {
         activity.findViewById(R.id.returning_user_display).setVisibility(View.VISIBLE);
         activity.findViewById(R.id.new_user_display).setVisibility(View.GONE);
 
-        if (activity.pack == null) {
-            activity.service.getPack(user.pack, this);
-        } else {
+        if (activity.pack != null) {
             updatePackDisplay();
+            if (activity.alpha == null) {
+                activity.service.getAlpha(activity);
+            } else {
+                updateAlphaDisplay();
+            }
         }
     }
 
@@ -89,6 +92,14 @@ public class PackFragment extends Fragment {
         Log.d("packFragment", "updating pack display");
         ((TextView) activity.findViewById(R.id.hello_pack)).setText("Hello " + activity.pack.name + " pack!");
         ((TextView) activity.findViewById(R.id.pack_points)).setText("" + activity.pack.points + " points!");
+    }
+
+    public void updateAlphaDisplay() {
+        if (activity.alpha.equals(activity.user.username)){
+            ((TextView) activity.findViewById(R.id.alpha)).setText("You are the alpha wolf!");
+        } else {
+            ((TextView) activity.findViewById(R.id.hello_pack)).setText(activity.alpha + " is the alpha wolf!");
+        }
     }
 
     class MyArrayAdapter extends ArrayAdapter<Pack> {

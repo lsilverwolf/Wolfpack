@@ -31,11 +31,22 @@ public class QuestFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        activity = (MainActivity) getActivity();
+
+        if (activity.pack != null) {
+            updatePackDisplay();
+        }
+
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        final View rootView = inflater.inflate(R.layout.quest_fragment, container, false);
-        ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
+        rootView = inflater.inflate(R.layout.quest_fragment, container, false);
+
         Button conquer = (Button)rootView.findViewById(R.id.button);
         myPoints = (TextView) rootView.findViewById(R.id.MyPointsToTerritory);
         nextTerritory = (TextView) rootView.findViewById(R.id.textView2);
@@ -52,62 +63,64 @@ public class QuestFragment extends Fragment {
             }
         });
 
-        ImageView map = (ImageView) rootView.findViewById(R.id.imageView);
-        switch (getStatus()){
-            case 0:
-                map.setImageResource(R.drawable.pos0);
-                break;
-            case 1:
-                map.setImageResource(R.drawable.pos1);
-                break;
-            case 2:
-                map.setImageResource(R.drawable.pos2);
-                break;
-            case 3:
-                map.setImageResource(R.drawable.pos3);
-                break;
-            case 4:
-                map.setImageResource(R.drawable.pos4);
-                break;
-            case 5:
-                map.setImageResource(R.drawable.pos5);
-                break;
-            case 6:
-                map.setImageResource(R.drawable.pos6);
-                break;
-            case 7:
-                map.setImageResource(R.drawable.pos7);
-                break;
-
-        }
+//        ImageView map = (ImageView) rootView.findViewById(R.id.imageView);
+//        switch (getStatus()){
+//            case 0:
+//                map.setImageResource(R.drawable.pos0);
+//                break;
+//            case 1:
+//                map.setImageResource(R.drawable.pos1);
+//                break;
+//            case 2:
+//                map.setImageResource(R.drawable.pos2);
+//                break;
+//            case 3:
+//                map.setImageResource(R.drawable.pos3);
+//                break;
+//            case 4:
+//                map.setImageResource(R.drawable.pos4);
+//                break;
+//            case 5:
+//                map.setImageResource(R.drawable.pos5);
+//                break;
+//            case 6:
+//                map.setImageResource(R.drawable.pos6);
+//                break;
+//            case 7:
+//                map.setImageResource(R.drawable.pos7);
+//                break;
+//
+//        }
 
         return rootView;
 
     }
 
     private int getStatus(){
-        int serverVal = 550;
+//        int serverVal = 550;
 
         /*
         HERE IS THE OTHER BIG COMMENT. GET THE TOTAL SCORE FROM
         THE SERVER, AND RETURN THAT SCORE (NOT ACTUALLY 0!!!)
          */
 
-        StringBuilder fileTextScore = new StringBuilder();
-        try{
-            FileInputStream fisPoints = activity.openFileInput("VocabScore");
-            InputStreamReader inputStreamReader = new InputStreamReader(fisPoints);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String line;
-            while ((line = bufferedReader.readLine()) != null){
-                fileTextScore.append(line);
-            }
-            fisPoints.close();
-            serverVal = Integer.parseInt(fileTextScore.toString());
-            myPoints.setText("My Points: " + serverVal);
-        }catch (IOException e){
-            Log.e("IOException", e.getMessage());
-        }
+//        StringBuilder fileTextScore = new StringBuilder();
+//        try{
+//            FileInputStream fisPoints = activity.openFileInput("VocabScore");
+//            InputStreamReader inputStreamReader = new InputStreamReader(fisPoints);
+//            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+//            String line;
+//            while ((line = bufferedReader.readLine()) != null){
+//                fileTextScore.append(line);
+//            }
+//            fisPoints.close();
+//
+//        }catch (IOException e){
+//            Log.e("IOException", e.getMessage());
+//        }
+
+        int serverVal = activity.pack.points;
+        myPoints.setText("Pack Points: " + serverVal);
 
         //int serverVal = 550; //replace this with the real result!
         if (serverVal<=100){
@@ -152,5 +165,41 @@ public class QuestFragment extends Fragment {
         }
 
     }
+
+    public void updatePackDisplay(){
+
+        myPoints = (TextView) rootView.findViewById(R.id.MyPointsToTerritory);
+        nextTerritory = (TextView) rootView.findViewById(R.id.textView2);
+
+        ImageView map = (ImageView) rootView.findViewById(R.id.imageView);
+        switch (getStatus()){
+            case 0:
+                map.setImageResource(R.drawable.pos0);
+                break;
+            case 1:
+                map.setImageResource(R.drawable.pos1);
+                break;
+            case 2:
+                map.setImageResource(R.drawable.pos2);
+                break;
+            case 3:
+                map.setImageResource(R.drawable.pos3);
+                break;
+            case 4:
+                map.setImageResource(R.drawable.pos4);
+                break;
+            case 5:
+                map.setImageResource(R.drawable.pos5);
+                break;
+            case 6:
+                map.setImageResource(R.drawable.pos6);
+                break;
+            case 7:
+                map.setImageResource(R.drawable.pos7);
+                break;
+
+        }
+    }
+
 
 }

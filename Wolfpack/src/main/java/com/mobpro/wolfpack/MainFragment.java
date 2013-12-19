@@ -29,48 +29,31 @@ public class MainFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (activity.user != null) {
+            updateScore();
+        }
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ImageButton wolf = (ImageButton)rootView.findViewById(R.id.puppybutton);
         TextView clickTime = (TextView) rootView.findViewById(R.id.timeToClick);
         clickTime.setText("Click the wolf to get started!");
-        final TextView pointsDisplay = (TextView)rootView.findViewById(R.id.pointsCounter);
-
-        //Getting points from the file
-        StringBuilder fileTextPoints = new StringBuilder();
-        try{
-            FileInputStream fisPoints = activity.openFileInput("Points");
-            InputStreamReader inputStreamReader = new InputStreamReader(fisPoints);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String line;
-            while ((line = bufferedReader.readLine()) != null){
-                fileTextPoints.append(line);
-            }
-            fisPoints.close();
-            pointsDisplay.setText("Howl Points: "+Long.parseLong(fileTextPoints.toString()));
-        }catch (IOException e){
-            Log.e("IOException", e.getMessage());
-        }
-
-
         wolf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                points[0] += 1;
-                pointsDisplay.setText("Howl Points: " + Integer.toString(points[0]));
+                activity.user.points ++;
+                updateScore();
+
+                activity.service.updateUserPoints(1, activity.user.username);
 
                 Calendar c = Calendar.getInstance();
                 long timeWhenClicked = c.getTimeInMillis();
-
-                try {
-                    FileOutputStream fosPoints = activity.openFileOutput("Points", Context.MODE_PRIVATE);
-                    fosPoints.write(Long.toString(points[0]).getBytes());
-                    fosPoints.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
                 try {
                     FileOutputStream fosTime = activity.openFileOutput("ClickTime", Context.MODE_PRIVATE);
                     fosTime.write(Long.toString(timeWhenClicked).getBytes());
@@ -146,4 +129,8 @@ public class MainFragment extends Fragment {
 
     }
 
+    public void updateScore() {
+        final TextView pointsDisplay = (TextView)rootView.findViewById(R.id.pointsCounter);
+        pointsDisplay.setText("Howl Points: " + activity.user.points);
+    }
 }

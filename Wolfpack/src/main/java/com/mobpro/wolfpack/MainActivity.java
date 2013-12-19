@@ -27,6 +27,11 @@ public class MainActivity extends Activity {
     ArrayList<Pack> packs = new ArrayList<Pack>();
     android.app.ActionBar.Tab mainTab;
     android.app.ActionBar.Tab packTab;
+    android.app.ActionBar.Tab questTab;
+    MainFragment mainFragment;
+    PackFragment packFragment;
+    QuestFragment questFragment;
+    String alpha;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -54,6 +59,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         Intent i = new Intent(getApplicationContext(), MyService.class);
         startService(i);
         ServiceConnection conn = new ServiceConnection() {
@@ -69,9 +75,9 @@ public class MainActivity extends Activity {
         bindService(new Intent(this, MyService.class), conn, BIND_AUTO_CREATE);
 
         // Define view fragments
-        MainFragment mainFragment = new MainFragment();
-        PackFragment packFragment = new PackFragment();
-        QuestFragment questFragment = new QuestFragment();
+        mainFragment = new MainFragment();
+        packFragment = new PackFragment();
+        questFragment = new QuestFragment();
 
         /*
          *  The following code is used to set up the tabs used for navigation.
@@ -87,7 +93,7 @@ public class MainActivity extends Activity {
         packTab = actionBar.newTab().setText(R.string.tab2);
         packTab.setTabListener(new NavTabListener(packFragment));
 
-        android.app.ActionBar.Tab questTab = actionBar.newTab().setText(R.string.tab3);
+        questTab = actionBar.newTab().setText(R.string.tab3);
         questTab.setTabListener(new NavTabListener(questFragment));
 
         actionBar.addTab(mainTab);
@@ -130,6 +136,22 @@ public class MainActivity extends Activity {
             getActionBar().selectTab(packTab);
         } else {
             getActionBar().selectTab(mainTab);
+            mainFragment.updateScore();
+            service.getPack(user.pack, this);
+        }
+    }
+
+    public void updateDisplayForPack() {
+        if (getActionBar().getSelectedTab() == packTab){
+            packFragment.updatePackDisplay();
+        } else if (getActionBar().getSelectedTab() == questTab) {
+            questFragment.updatePackDisplay();
+        }
+    }
+
+    public void updateDisplayForAlpha() {
+        if (getActionBar().getSelectedTab() == packTab){
+            packFragment.updateAlphaDisplay();
         }
     }
 }

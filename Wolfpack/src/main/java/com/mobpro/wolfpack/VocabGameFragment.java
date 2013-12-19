@@ -49,33 +49,37 @@ public class VocabGameFragment extends Fragment {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.container, newFragment);
                 transaction.addToBackStack(null);
-
-                StringBuilder fileTextScore = new StringBuilder();
-                try{
-                    FileInputStream fisPoints = activity.openFileInput("VocabScore");
-                    InputStreamReader inputStreamReader = new InputStreamReader(fisPoints);
-                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                    String line;
-                    while ((line = bufferedReader.readLine()) != null){
-                        fileTextScore.append(line);
-                    }
-                    fisPoints.close();
-                    serverVal = Integer.parseInt(fileTextScore.toString()) + score;
-                }catch (IOException e){
-                    Log.e("IOException", e.getMessage());
-                }
-                try {
-                    FileOutputStream fosScore = activity.openFileOutput("VocabScore", Context.MODE_PRIVATE);
-                    fosScore.write(Integer.toString(serverVal).getBytes());
-                    fosScore.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//
+//                StringBuilder fileTextScore = new StringBuilder();
+//                try{
+//                    FileInputStream fisPoints = activity.openFileInput("VocabScore");
+//                    InputStreamReader inputStreamReader = new InputStreamReader(fisPoints);
+//                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+//                    String line;
+//                    while ((line = bufferedReader.readLine()) != null){
+//                        fileTextScore.append(line);
+//                    }
+//                    fisPoints.close();
+//                    serverVal = Integer.parseInt(fileTextScore.toString()) + score;
+//                }catch (IOException e){
+//                    Log.e("IOException", e.getMessage());
+//                }
+//                try {
+//                    FileOutputStream fosScore = activity.openFileOutput("VocabScore", Context.MODE_PRIVATE);
+//                    fosScore.write(Integer.toString(serverVal).getBytes());
+//                    fosScore.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
                 /*
                 HERE IS THE BIG COMMENT. IF A USER CLICKS HERE THAT MEANS THEY ARE
                 DONE PLAYING FOR NOW. ADD THIS SCORE TO THE EXISTING TOTAL SCORE ON THE
                 SURVER.
                  */
+                if (score > 0){
+                    activity.service.updatePackPoints(score, activity.pack.name);
+                    activity.pack.points += score;
+                }
 
                 transaction.commit();
             }

@@ -146,7 +146,7 @@ public class MyService extends Service {
         }.execute(null,null);
     }
 
-    public void getPack(final String packName, final PackFragment packFragment) {
+    public void getPack(final String packName, final MainActivity activity) {
 
         new AsyncTask<Void, Void, Void>(){
 
@@ -162,11 +162,11 @@ public class MyService extends Service {
                     String responseString = out.toString();
                     final Pack pack = parsePack(responseString);
 
-                    packFragment.activity.pack = pack;
-                    packFragment.activity.runOnUiThread(new Runnable() {
+                    activity.pack = pack;
+                    activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            packFragment.updatePackDisplay();
+                            activity.updateDisplayForPack();
                         }
                     });
 
@@ -221,7 +221,6 @@ public class MyService extends Service {
                         }
                     });
 
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -248,6 +247,85 @@ public class MyService extends Service {
         }
     }
 
+    public void updatePackPoints(final int points, final String packName) {
+        new AsyncTask<Void,Void,Void>(){
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try{
+                    HttpClient httpClient = new DefaultHttpClient();
+                    HttpPost httppost = new HttpPost("http://radiant-inlet-3938.herokuapp.com/pack/score");
+                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+                    nameValuePairs.add(new BasicNameValuePair("pack", packName));
+                    nameValuePairs.add(new BasicNameValuePair("points", String.valueOf(points)));
+                    httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                    HttpResponse response = httpClient.execute(httppost);
+                } catch (Exception e){
+                    Log.d("updatePackPoints", "error attempting to update pack points: " + e.toString());
+                }
+                return null;
+            }
+        }.execute(null, null);
+    }
+
+    public void updateUserPoints(final int points, final String username) {
+        new AsyncTask<Void,Void,Void>(){
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try{
+                    HttpClient httpClient = new DefaultHttpClient();
+                    HttpPost httppost = new HttpPost("http://radiant-inlet-3938.herokuapp.com/user/score");
+                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+                    nameValuePairs.add(new BasicNameValuePair("username", username));
+                    nameValuePairs.add(new BasicNameValuePair("points", String.valueOf(points)));
+                    httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                    HttpResponse response = httpClient.execute(httppost);
+                } catch (Exception e){
+                    Log.d("updatePackPoints", "error attempting to update pack points: " + e.toString());
+                }
+                return null;
+            }
+        }.execute(null, null);
+    }
+
+    public void getAlpha(final MainActivity activity) {
+        new AsyncTask<Void, Void, Void>(){
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try{
+                    HttpClient httpClient = new DefaultHttpClient();
+                    HttpGet httpGet = new HttpGet("http://radiant-inlet-3938.herokuapp.com/alpha/" + activity.pack.name);
+                    HttpResponse response = httpClient.execute(httpGet);
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    response.getEntity().writeTo(out);
+                    out.close();
+                    String responseString = out.toString();
+                    final User alpha = parseUser(responseString);
+
+                    activity.alpha = alpha.username;
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            activity.updateDisplayForAlpha();
+                        }
+                    });
+
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                return null;
+            }
+        }.execute(null,null);
+
+
+    }
+
     public List<Pack> JSONParse(String responseString) throws JSONException {
         JSONObject obj = new JSONObject(responseString);
         List<Pack> res = new ArrayList<Pack>();
@@ -263,6 +341,7 @@ public class MyService extends Service {
         }
         return res;
     }
+
 
 
 
