@@ -6,10 +6,12 @@ package com.mobpro.wolfpack;
 public class Pack {
     String name;
     String creator;
+    int points;
 
-    public Pack(String name, String creator) {
+    public Pack(String name, String creator, int points) {
         this.name = name;
         this.creator = creator;
+        this.points = points;
     }
 
     @Override

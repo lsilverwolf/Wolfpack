@@ -15,6 +15,7 @@ import com.facebook.model.GraphUser;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -27,6 +28,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -39,13 +41,12 @@ public class MyService extends Service {
         return new MyServiceBinder();
     }
 
-    public void createPack(final String packName, final String creatorName){
+    public void createPack(final String packName, final String creatorName, final PackFragment packFragment){
         new AsyncTask<Void,Void,Void>(){
 
             @Override
             protected Void doInBackground(Void... voids) {
                 try{
-                    Log.d("create pack", "attempting to create pack");
                     HttpClient httpClient = new DefaultHttpClient();
                     HttpPost httppost = new HttpPost("http://radiant-inlet-3938.herokuapp.com/createpack");
                     List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
@@ -53,7 +54,14 @@ public class MyService extends Service {
                     nameValuePairs.add(new BasicNameValuePair("username", creatorName));
                     httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                     HttpResponse response = httpClient.execute(httppost);
-                    Log.d("create pack", "pack created");
+                    final User user = new User(creatorName, packName, 0);
+                    packFragment.activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            packFragment.displayReturningUser(user);
+                        }
+                    });
+
                 } catch (Exception e){
                     Log.d("create pack", "error attempting to create pack: " + e.toString());
                 }
@@ -90,10 +98,9 @@ public class MyService extends Service {
                 httpResponse.getEntity().writeTo(out);
                 out.close();
                 responseString = out.toString();
-                List<List<String>> parsedResponse = JSONParse(responseString);
-                for (List<String> resp:parsedResponse){
+                List<Pack> parsedResponse = JSONParse(responseString);
+                for (Pack pack:parsedResponse){
 //                    if (usernames.contains(resp.get(1))){
-                        Pack pack = new Pack(resp.get(0), resp.get(1));
                         packs.add(pack);
                         Log.d("getting friends packs", "found friends pack: " + pack.toString());
 //                    } else {
@@ -119,20 +126,162 @@ public class MyService extends Service {
         }.execute(null, null);
     }
 
-    public List<List<String>> JSONParse(String responseString) throws JSONException {
+    public void joinPack(final MainActivity activity, final Pack pack, final PackFragment packFragment){
+        new AsyncTask<Void, Void, Void>(){
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try {
+                    HttpClient httpClient = new DefaultHttpClient();
+                    HttpPost httpPost = new HttpPost("http://radiant-inlet-3938.herokuapp.com/joinpack");
+                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+                    nameValuePairs.add(new BasicNameValuePair("pack", pack.name));
+                    nameValuePairs.add(new BasicNameValuePair("username", activity.user.getUsername()));
+                    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                    HttpResponse response = httpClient.execute(httpPost);
+                    final User user = new User(activity.user.getUsername(), pack.name, 0);
+                    packFragment.activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            packFragment.displayReturningUser(user);
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+        }.execute(null,null);
+    }
+
+    public void getPack(final String packName, final PackFragment packFragment) {
+
+        new AsyncTask<Void, Void, Void>(){
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try{
+                    HttpClient httpClient = new DefaultHttpClient();
+                    HttpGet httpGet = new HttpGet("http://radiant-inlet-3938.herokuapp.com/pack/" + packName);
+                    HttpResponse response = httpClient.execute(httpGet);
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    response.getEntity().writeTo(out);
+                    out.close();
+                    String responseString = out.toString();
+                    final Pack pack = parsePack(responseString);
+
+                    packFragment.activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            packFragment.updatePackDisplay(pack);
+                        }
+                    });
+
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                return null;
+            }
+        }.execute(null,null);
+
+    }
+
+    private Pack parsePack(String responseString) throws JSONException {
+        Log.d("get packs", responseString);
         JSONObject obj = new JSONObject(responseString);
-        List<List<String>> res = new ArrayList<List<String>>();
+        List<User> res = new ArrayList<User>();
+        JSONArray array;
+        array = obj.getJSONArray("packs");
+        if (array.length() == 0) {
+            return null;
+        } else {
+            String pack = array.getJSONObject(0).getString("pack");
+            String creator = array.getJSONObject(0).getString("creator");
+            int points = array.getJSONObject(0).getInt("points");
+            return new Pack(pack, creator, points);
+        }
+    }
+
+    public void getUser(final String username, final PackFragment packFragment){
+        new AsyncTask<Void, Void, Void>(){
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try{
+                    HttpClient httpClient = new DefaultHttpClient();
+                    HttpGet httpGet = new HttpGet("http://radiant-inlet-3938.herokuapp.com/" + username);
+                    HttpResponse response = httpClient.execute(httpGet);
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    response.getEntity().writeTo(out);
+                    out.close();
+                    String responseString = out.toString();
+                    final User user = parseUser(responseString);
+
+                    if (user == null) {
+                        packFragment.activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                packFragment.displayNewUser();
+                            }
+                        });
+                    } else {
+                        packFragment.activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                packFragment.displayReturningUser(user);
+                            }
+                        });
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                return null;
+            }
+        }.execute(null,null);
+
+    }
+
+    public User parseUser(String responseString) throws JSONException {
+        JSONObject obj = new JSONObject(responseString);
+        List<User> res = new ArrayList<User>();
+        JSONArray array;
+        array = obj.getJSONArray("users");
+        if (array.length() == 0) {
+            return null;
+        } else {
+            String username = array.getJSONObject(0).getString("username");
+            String pack = array.getJSONObject(0).getString("pack");
+            int points = array.getJSONObject(0).getInt("points");
+            return new User(username, pack, points);
+        }
+    }
+
+    public List<Pack> JSONParse(String responseString) throws JSONException {
+        JSONObject obj = new JSONObject(responseString);
+        List<Pack> res = new ArrayList<Pack>();
         JSONArray array;
         array = obj.getJSONArray("packs");
 
         for (int j = 0; j<array.length(); j++){
-            List<String> inner = new ArrayList<String>();
-            inner.add(array.getJSONObject(j).getString("pack"));
-            inner.add(array.getJSONObject(j).getString("creator"));
-            res.add(inner);
+            String pack = array.getJSONObject(0).getString("pack");
+            String creator = array.getJSONObject(0).getString("creator");
+            int points = array.getJSONObject(0).getInt("points");
+            res.add(new Pack(pack, creator, points));
+
         }
         return res;
     }
+
+
 
     class MyServiceBinder extends Binder {
         MyService getService() {
