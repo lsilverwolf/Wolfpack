@@ -2,7 +2,11 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginTop="8dp">
 
     <LinearLayout
         android:orientation="vertical"
@@ -20,13 +24,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/pack_name"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:layout_marginBottom="8dp"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/create_pack_button"
-                android:text="Create Pack" />
+                android:text="Create Pack"
+                android:layout_marginBottom="8dp"/>
         </LinearLayout>
 
         <TextView
@@ -34,13 +40,15 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="or Join a Friend's Pack"
-            android:id="@+id/textView" />
+            android:id="@+id/textView"
+            android:layout_marginBottom="8dp"/>
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:id="@+id/friends_pack_list" />
+            android:id="@+id/friends_pack_list"
+            android:layout_marginBottom="8dp"/>
 
     </LinearLayout>
 
@@ -56,19 +64,21 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Hello pack!"
-            android:id="@+id/hello_pack" />
+            android:id="@+id/hello_pack"
+            android:layout_marginBottom="8dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/pack_points" />
+            android:id="@+id/pack_points"
+            android:layout_marginBottom="8dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/alpha" />
+            android:id="@+id/alpha"/>
 
     </LinearLayout>
 
