@@ -16,10 +16,17 @@ import android.widget.TextView;
 import com.facebook.*;
 import com.facebook.model.*;
 
+import java.util.ArrayList;
+
 public class MainActivity extends Activity {
     MyService service;
     Session session;
-    GraphUser user;
+    GraphUser fbUser;
+    User user;
+    Pack pack;
+    ArrayList<Pack> packs = new ArrayList<Pack>();
+    android.app.ActionBar.Tab mainTab;
+    android.app.ActionBar.Tab packTab;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -46,7 +53,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         Intent i = new Intent(getApplicationContext(), MyService.class);
         startService(i);
@@ -75,10 +81,10 @@ public class MainActivity extends Activity {
         actionBar.setNavigationMode(android.app.ActionBar.NAVIGATION_MODE_TABS);
 
 
-        android.app.ActionBar.Tab mainTab = actionBar.newTab().setText(R.string.tab1);
+        mainTab = actionBar.newTab().setText(R.string.tab1);
         mainTab.setTabListener(new NavTabListener(mainFragment));
 
-        android.app.ActionBar.Tab packTab = actionBar.newTab().setText(R.string.tab2);
+        packTab = actionBar.newTab().setText(R.string.tab2);
         packTab.setTabListener(new NavTabListener(packFragment));
 
         android.app.ActionBar.Tab questTab = actionBar.newTab().setText(R.string.tab3);
@@ -102,16 +108,28 @@ public class MainActivity extends Activity {
 
                         // callback after Graph API response with user object
                         @Override
-                        public void onCompleted(GraphUser user, Response response) {
-                            if (user != null) {
-                                MainActivity.this.user = user;
+                        public void onCompleted(GraphUser fbUser, Response response) {
+                            if (fbUser != null) {
+                                MainActivity.this.fbUser = fbUser;
                                 TextView welcome = (TextView) findViewById(R.id.welcome);
-                                welcome.setText("Hello " + user.getName() + "!");
+                                welcome.setText("Hello " + fbUser.getName() + "!");
+                                service.getUser(fbUser.getUsername(), MainActivity.this);
                             }
                         }
                     });
                 }
             }
         });
+
+
+
+    }
+
+    public void updateDisplayForUser() {
+        if (user == null){
+            getActionBar().selectTab(packTab);
+        } else {
+            getActionBar().selectTab(mainTab);
+        }
     }
 }

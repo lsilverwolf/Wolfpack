@@ -7,15 +7,10 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.facebook.Request;
-import com.facebook.Response;
 import com.facebook.Session;
-import com.facebook.android.Facebook;
-import com.facebook.model.GraphUser;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -27,12 +22,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MyService extends Service {
 
@@ -112,12 +103,12 @@ public class MyService extends Service {
                     Log.d("getting friends packs", "error attempting to get friends packs: " + e.toString());
                 }
 
-
+                activity.packs = packs;
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Log.d("getting friends packs", "updating view");
-                        packFragment.updatePackList(packs);
+                        packFragment.updatePackList();
                     }
                 });
 
@@ -136,10 +127,10 @@ public class MyService extends Service {
                     HttpPost httpPost = new HttpPost("http://radiant-inlet-3938.herokuapp.com/joinpack");
                     List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
                     nameValuePairs.add(new BasicNameValuePair("pack", pack.name));
-                    nameValuePairs.add(new BasicNameValuePair("username", activity.user.getUsername()));
+                    nameValuePairs.add(new BasicNameValuePair("username", activity.fbUser.getUsername()));
                     httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                     HttpResponse response = httpClient.execute(httpPost);
-                    final User user = new User(activity.user.getUsername(), pack.name, 0);
+                    final User user = new User(activity.fbUser.getUsername(), pack.name, 0);
                     packFragment.activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -171,10 +162,11 @@ public class MyService extends Service {
                     String responseString = out.toString();
                     final Pack pack = parsePack(responseString);
 
+                    packFragment.activity.pack = pack;
                     packFragment.activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            packFragment.updatePackDisplay(pack);
+                            packFragment.updatePackDisplay();
                         }
                     });
 
@@ -207,7 +199,7 @@ public class MyService extends Service {
         }
     }
 
-    public void getUser(final String username, final PackFragment packFragment){
+    public void getUser(final String username, final MainActivity activity){
         new AsyncTask<Void, Void, Void>(){
 
             @Override
@@ -221,22 +213,13 @@ public class MyService extends Service {
                     out.close();
                     String responseString = out.toString();
                     final User user = parseUser(responseString);
-
-                    if (user == null) {
-                        packFragment.activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                packFragment.displayNewUser();
-                            }
-                        });
-                    } else {
-                        packFragment.activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                packFragment.displayReturningUser(user);
-                            }
-                        });
-                    }
+                    activity.user = user;
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            activity.updateDisplayForUser();
+                        }
+                    });
 
 
                 } catch (Exception e) {
